@@ -1,0 +1,40 @@
+.funds-container {
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .fund-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+  }
+  
+  .fund-item:last-child {
+    border-bottom: none;
+  }
+  
+  .fund-item h4 {
+    margin: 0;
+    color: #2e3b4e;
+  }
+  
+  .fund-item p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .fund-item button {
+    margin-top: 10px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .fund-item button:hover {
+    background-color: #1e874b;
+  }
+  
