@@ -1,20 +1,101 @@
-.status-box {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .status-label {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .status-input {
-    padding: 10px;
-    font-size: 16px;
-    width: 100%;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
+.project-form {
+  max-width: 600px;
+  margin-top: 1.5rem;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.project-form input,
+.project-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.project-form button {
+  background-color: #1abc9c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.project-form button:hover {
+  background-color: #16a085;
+}
+
+/* Task form styling */
+.task-form {
+  max-width: 600px;
+  margin-top: 2rem;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.task-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.task-form select,
+.task-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.task-form button {
+  background-color: #3498db;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.task-form button:hover {
+  background-color: #2980b9;
+}
+
+/* Student task list */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.task-item {
+  background: #ecf0f1;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
