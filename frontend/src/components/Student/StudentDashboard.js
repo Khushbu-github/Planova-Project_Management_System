@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { handleSuccess } from '../../utils';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from './SSidebar';
+import Chatbot from '../Chatbot';  // Import Chatbot
 import '../../css/StudentCss/StudentDashboardLayout.css';
-
-
-
 
 function StudentDashboard() {
     const [loggedInUser, setLoggedInUser] = useState(null);
@@ -22,7 +20,7 @@ function StudentDashboard() {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('loggedInUser');
-        handleSuccess('User Loggedout');
+        handleSuccess('User Logged out');
         setTimeout(() => {
             navigate('/login');
         }, 1000);
@@ -35,6 +33,7 @@ function StudentDashboard() {
                 <h1>Welcome, {loggedInUser?.name}</h1>
                 <h2>Student Dashboard</h2>
             </div>
+            <Chatbot />  {/* Add Chatbot here */}
             <ToastContainer />
         </div>
     );

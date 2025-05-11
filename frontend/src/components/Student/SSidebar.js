@@ -7,10 +7,10 @@ export default function Sidebar({ onLogout }) {
         <div className="sidebar">
             <h3 style={{ marginBottom: '30px' }}>Planova</h3>
             <Link to="/student/dashboard">Dashboard</Link>
-            <Link to="/student/project-status">Project Status</Link>
+            <Link to="/student/project-status">Tasks</Link>
+            <Link to="/student/updates">Updates</Link>
             <Link to="/student/documentation">Documentation</Link>
             <Link to="/student/discussions">Discussion</Link>
-            <Link to="/student/funds">Funds</Link>
             <Link to="/student/profile">Profile</Link>
 
             <div style={{ flexGrow: 1 }}></div>
