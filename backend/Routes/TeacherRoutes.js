@@ -1,7 +1,10 @@
+// Update teacher routes
 const express = require('express');
 const router = express.Router();
 const { verifyToken, verifyRole } = require('../Middlewares/AuthMiddleware');
+const { getTeacherTeams } = require('../Controllers/TeamController');
 
+// Existing routes
 // Dashboard
 router.get('/dashboard', verifyToken, verifyRole('teacher'), (req, res) => {
   res.json({ success: true, message: 'Teacher Dashboard data' });
@@ -42,5 +45,8 @@ router.get('/profile', verifyToken, verifyRole('teacher'), (req, res) => {
 router.post('/profile/update', verifyToken, verifyRole('teacher'), (req, res) => {
   res.json({ success: true, message: 'Profile updated' });
 });
+
+// New team-related routes
+router.get('/teams', verifyToken, verifyRole('teacher'), getTeacherTeams);
 
 module.exports = router;

@@ -3,12 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleSuccess } from '../../utils';
 import Sidebar from './TSidebar';
-import Chatbot from '../Chatbot';  // Import Chatbot
-import '../../css/TeacherCss/TeacherDashboardLayout.css';
+import Chatbot from '../Chatbot';
+import TeacherTeams from './TeacherTeams';
 
 const TeacherDashboard = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const navigate = useNavigate();
+
+  // Dark theme with gradient styles
+  const styles = {
+    container: {
+      display: 'flex',
+      backgroundColor: '#121212',
+      minHeight: '100vh',
+      color: '#ffffff',
+      fontFamily: 'Arial, sans-serif',
+    },
+    contentArea: {
+      flex: '1',
+      padding: '40px',  // Increased padding for more space
+      overflowY: 'auto',
+      backgroundColor: '#121212',
+    },
+    welcomeHeading: {
+      background: 'linear-gradient(90deg, #a36fe7 0%, #5271ff 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
+      fontSize: '2.5rem',
+      marginBottom: '25px',  // Increased margin for more space
+    },
+    subHeading: {
+      background: 'linear-gradient(90deg, #9669e0 30%, #6f89ff 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
+      fontSize: '1.8rem',
+      marginBottom: '30px',  // Increased margin for more space
+    }
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem('loggedInUser');
@@ -27,13 +60,14 @@ const TeacherDashboard = () => {
   };
 
   return (
-    <div className="teacher-dashboard-container">
+    <div style={styles.container}>
       <Sidebar onLogout={handleLogout} />
-      <div className="content-area">
-        <h1>Welcome, {loggedInUser?.name}</h1>
-        <h2>Teacher Dashboard</h2>
+      <div style={styles.contentArea}>
+        <h1 style={styles.welcomeHeading}>Welcome, {loggedInUser?.name}</h1>
+        <h3 style={styles.subHeading}>Student Teams</h3>
+        <TeacherTeams />
       </div>
-      <Chatbot />  {/* Add Chatbot here */}
+      <Chatbot />
       <ToastContainer />
     </div>
   );

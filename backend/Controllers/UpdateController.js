@@ -1,7 +1,8 @@
-const Task = require('../Models/Task');
-const jwt = require('jsonwebtoken');
+const Update = require('../Models/Update');
 const User = require('../Models/User');
+const jwt = require('jsonwebtoken');
 
+// Helper to verify token and get user
 const verifyAndGetUser = async (req) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) throw new Error("Unauthorized");
@@ -11,28 +12,24 @@ const verifyAndGetUser = async (req) => {
   return user;
 };
 
-exports.assignTask = async (req, res) => {
+// Get all updates (for teachers)
+exports.getAllUpdates = async (req, res) => {
   try {
     const user = await verifyAndGetUser(req);
-    if (user.role !== 'teacher') return res.status(403).json({ message: "Access denied" });
+    if (user.role !== 'teacher') {
+      return res.status(403).json({ message: "Access denied" });
+    }
 
-    const { title, description, studentId } = req.body;
-    const task = new Task({ title, description, studentId, teacherId: user._id });
-    await task.save();
-    res.status(201).json({ message: "Task assigned successfully", task });
+    const updates = await Update.find()
+      .populate('studentId', 'name') // Populate only 'name' from User
+      .sort({ createdAt: -1 });
+
+    // Filter out updates where studentId is null
+    const filtered = updates.filter(update => update.studentId !== null);
+
+    res.json(filtered);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-exports.getStudentTasks = async (req, res) => {
-  try {
-    const user = await verifyAndGetUser(req);
-    if (user.role !== 'student') return res.status(403).json({ message: "Access denied" });
-
-    const tasks = await Task.find({ studentId: user._id });
-    res.status(200).json(tasks);
-  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };

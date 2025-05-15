@@ -30,8 +30,11 @@ exports.getAllDocuments = async (req, res) => {
     }
 
     const docs = await Document.find().populate('studentId', 'name');
-    res.json(docs);
+    const filteredDocs = docs.filter(doc => doc.studentId !== null); // remove nulls
+
+    res.json(filteredDocs);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Failed to fetch documents', error: err.message });
   }
 };

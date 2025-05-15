@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { handleSuccess, handleError } from '../../utils';
 import { io } from 'socket.io-client';
 import Sidebar from './SSidebar';
-import '../../css/StudentCss/StudentDashboardLayout.css';
-import '../../css/StudentCss/sDiscussions.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SDiscussions = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -120,11 +118,11 @@ const SDiscussions = () => {
       if (data.success) {
         setUsers(data.users);
       } else {
-        handleError(data.message || 'Failed to load users');
+        toast.error(data.message || 'Failed to load users');
       }
     } catch (error) {
       console.error('Error fetching users:', error);
-      handleError('Error fetching users');
+      toast.error('Error fetching users');
     }
   };
 
@@ -150,11 +148,11 @@ const SDiscussions = () => {
       if (data.success) {
         setMessages(data.messages);
       } else {
-        handleError(data.message || 'Failed to load messages');
+        toast.error(data.message || 'Failed to load messages');
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
-      handleError('Error fetching messages');
+      toast.error('Error fetching messages');
     } finally {
       setLoading(false);
     }
@@ -229,11 +227,11 @@ const SDiscussions = () => {
         // Add the new message to our messages array
         setMessages(prev => [...prev, data.message]);
       } else {
-        handleError(data.message || 'Failed to send message');
+        toast.error(data.message || 'Failed to send message');
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      handleError('Error sending message');
+      toast.error('Error sending message');
     }
   };
 
@@ -243,95 +241,380 @@ const SDiscussions = () => {
     }
     localStorage.removeItem('token');
     localStorage.removeItem('loggedInUser');
-    handleSuccess('User Loggedout');
+    toast.success('Logged out successfully');
     setTimeout(() => {
       navigate('/login');
     }, 1000);
   };
 
+  // Enhanced styles matching the dark theme with purple and blue gradients
+  const styles = {
+    container: {
+      display: 'flex',
+      minHeight: '100vh',
+      backgroundColor: '#0a0a0a',
+      color: '#fff',
+      position: 'relative',
+      fontFamily: 'sans-serif'
+    },
+    contentArea: {
+      flex: '1',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '25px 30px',
+      overflowY: 'auto',
+      backgroundColor: '#101010'
+    },
+    title: {
+      background: 'linear-gradient(90deg, #b721ff 0%, #21d4fd 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
+      fontSize: '2.5rem',
+      marginBottom: '10px',
+      fontWeight: 'bold'
+    },
+    subtitle: {
+      color: '#e0e0e0',
+      fontSize: '1.8rem',
+      marginBottom: '25px'
+    },
+    chatContainer: {
+      display: 'flex',
+      flex: '1',
+      backgroundColor: '#121212',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+      height: 'calc(100vh - 200px)',
+    },
+    userList: {
+      width: '280px',
+      borderRight: '1px solid #222',
+      overflowY: 'auto',
+      backgroundColor: '#151515',
+      padding: '15px 0'
+    },
+    userListTitle: {
+      padding: '0 20px 15px',
+      color: '#b0b0b0',
+      borderBottom: '1px solid #222',
+      fontSize: '1.2rem',
+      marginBottom: '10px'
+    },
+    userListContent: {
+      listStyle: 'none',
+      padding: '0',
+      margin: '0'
+    },
+    userItem: (isSelected) => ({
+      padding: '12px 20px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      transition: 'background-color 0.3s ease',
+      backgroundColor: isSelected ? '#1e1e2d' : 'transparent',
+      borderLeft: isSelected ? '3px solid #b721ff' : '3px solid transparent',
+      ':hover': {
+        backgroundColor: '#1a1a2a'
+      }
+    }),
+    userName: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px'
+    },
+    onlineIndicator: {
+      width: '10px',
+      height: '10px',
+      borderRadius: '50%',
+      backgroundColor: '#4CAF50',
+      display: 'inline-block'
+    },
+    chatArea: {
+      flex: '1',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative'
+    },
+    chatHeader: {
+      padding: '20px',
+      borderBottom: '1px solid #222',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    chatHeaderTitle: {
+      fontSize: '1.3rem',
+      fontWeight: 'bold',
+      color: '#fff'
+    },
+    userStatus: {
+      fontSize: '0.9rem',
+      color: '#4CAF50',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px'
+    },
+    messageContainer: {
+      flex: '1',
+      overflowY: 'auto',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px'
+    },
+    messageBubble: (isSent) => ({
+      maxWidth: '70%',
+      alignSelf: isSent ? 'flex-end' : 'flex-start',
+      backgroundColor: isSent 
+        ? 'linear-gradient(135deg, #b721ff 0%, #21d4fd 100%)' 
+        : '#2d2d3d',
+      background: isSent 
+        ? 'linear-gradient(135deg, #b721ff 0%, #21d4fd 100%)' 
+        : '#2d2d3d',
+      padding: '12px 15px',
+      borderRadius: isSent 
+        ? '15px 15px 0 15px' 
+        : '15px 15px 15px 0',
+      position: 'relative',
+      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+      wordBreak: 'break-word'
+    }),
+    messageText: {
+      color: '#fff',
+      fontSize: '0.95rem',
+      lineHeight: '1.4'
+    },
+    messageTime: {
+      fontSize: '0.7rem',
+      color: 'rgba(255,255,255,0.7)',
+      marginTop: '5px',
+      textAlign: 'right'
+    },
+    typingIndicator: {
+      padding: '10px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px'
+    },
+    typingDot: {
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
+      backgroundColor: '#b0b0b0',
+      display: 'inline-block',
+      animation: 'typingAnimation 1s infinite ease-in-out',
+      animationDelay: index => `${index * 0.3}s`
+    },
+    messageInputForm: {
+      padding: '15px',
+      borderTop: '1px solid #222',
+      display: 'flex',
+      gap: '10px'
+    },
+    messageInput: {
+      flex: '1',
+      backgroundColor: '#1a1a1a',
+      border: '1px solid #333',
+      borderRadius: '8px',
+      padding: '12px 15px',
+      color: '#fff',
+      fontSize: '0.95rem',
+      outline: 'none',
+      transition: 'border-color 0.3s ease'
+    },
+    sendButton: {
+      background: 'linear-gradient(90deg, #b721ff 0%, #21d4fd 100%)',
+      border: 'none',
+      borderRadius: '8px',
+      padding: '0 20px',
+      color: '#fff',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    selectUserPrompt: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#686868',
+      fontSize: '1.2rem',
+      fontStyle: 'italic'
+    },
+    loadingContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      color: '#686868'
+    },
+    noMessages: {
+      textAlign: 'center',
+      color: '#686868',
+      padding: '20px',
+      fontStyle: 'italic'
+    }
+  };
+
   return (
-    <div className="student-dashboard-container">
+    <div style={styles.container}>
       <Sidebar onLogout={handleLogout} />
-      <div className="content-area">
-        <h1>Welcome, {loggedInUser?.name}</h1>
-        <h2>Discussions</h2>
+      <div style={styles.contentArea}>
+        <h1 style={styles.title}>Welcome, {loggedInUser?.name}</h1>
+        <h2 style={styles.subtitle}>Discussions</h2>
         
-        <div className="chat-container">
-          <div className="user-list">
-            <h3>Users</h3>
+        <div style={styles.chatContainer}>
+          <div style={styles.userList}>
+            <h3 style={styles.userListTitle}>Users</h3>
             {users.length > 0 ? (
-              <ul>
+              <ul style={styles.userListContent}>
                 {users.map(user => (
                   <li 
                     key={user._id} 
-                    className={selectedUser?._id === user._id ? 'selected' : ''}
+                    style={{
+                      ...styles.userItem(selectedUser?._id === user._id),
+                      backgroundColor: selectedUser?._id === user._id ? '#1e1e2d' : 'transparent',
+                      borderLeft: selectedUser?._id === user._id ? '3px solid #b721ff' : '3px solid transparent',
+                    }}
                     onClick={() => setSelectedUser(user)}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = selectedUser?._id === user._id ? '#1e1e2d' : '#1a1a2a';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = selectedUser?._id === user._id ? '#1e1e2d' : 'transparent';
+                    }}
                   >
-                    {user.name}
-                    {onlineUsers.includes(user._id) && <span className="online-indicator"></span>}
+                    <div style={styles.userName}>
+                      {user.name}
+                    </div>
+                    {onlineUsers.includes(user._id) && <span style={styles.onlineIndicator}></span>}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>No users available</p>
+              <p style={{padding: '0 20px', color: '#686868'}}>No users available</p>
             )}
           </div>
           
-          <div className="chat-area">
+          <div style={styles.chatArea}>
             {selectedUser ? (
               <>
-                <div className="chat-header">
-                  <h3>Chat with {selectedUser.name}</h3>
-                  {onlineUsers.includes(selectedUser._id) && <span className="user-status">Online</span>}
+                <div style={styles.chatHeader}>
+                  <h3 style={styles.chatHeaderTitle}>{selectedUser.name}</h3>
+                  {onlineUsers.includes(selectedUser._id) && (
+                    <div style={styles.userStatus}>
+                      <span style={styles.onlineIndicator}></span>
+                      Online
+                    </div>
+                  )}
                 </div>
                 
-                <div className="message-container" ref={messageContainerRef}>
+                <div style={styles.messageContainer} ref={messageContainerRef}>
                   {loading ? (
-                    <div className="loading">Loading messages...</div>
+                    <div style={styles.loadingContainer}>Loading messages...</div>
                   ) : messages.length > 0 ? (
                     messages.map(msg => (
                       <div 
                         key={msg._id} 
-                        className={`message ${msg.senderId === loggedInUser?.id ? 'sent' : 'received'}`}
+                        style={{
+                          ...styles.messageBubble(msg.senderId === loggedInUser?.id),
+                          background: msg.senderId === loggedInUser?.id 
+                            ? 'linear-gradient(135deg, #b721ff 0%, #21d4fd 100%)' 
+                            : '#2d2d3d',
+                        }}
                       >
-                        <div className="message-content">{msg.text}</div>
-                        <div className="message-time">
+                        <div style={styles.messageText}>{msg.text}</div>
+                        <div style={styles.messageTime}>
                           {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="no-messages">No messages yet. Start a conversation!</div>
+                    <div style={styles.noMessages}>No messages yet. Start a conversation!</div>
                   )}
                   
                   {isTyping && (
-                    <div className="typing-indicator">
-                      <span></span>
-                      <span></span>
-                      <span></span>
+                    <div style={styles.typingIndicator}>
+                      <span style={{...styles.typingDot, animationDelay: '0s'}}></span>
+                      <span style={{...styles.typingDot, animationDelay: '0.3s'}}></span>
+                      <span style={{...styles.typingDot, animationDelay: '0.6s'}}></span>
                     </div>
                   )}
                 </div>
                 
-                <form className="message-input-form" onSubmit={sendMessage}>
+                <form style={styles.messageInputForm} onSubmit={sendMessage}>
                   <input
                     type="text"
                     value={newMessage}
                     onChange={handleTyping}
                     placeholder="Type a message..."
+                    style={styles.messageInput}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = '#b721ff';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = '#333';
+                    }}
                   />
-                  <button type="submit" disabled={!newMessage.trim()}>Send</button>
+                  <button 
+                    type="submit" 
+                    disabled={!newMessage.trim()}
+                    style={{
+                      ...styles.sendButton,
+                      opacity: !newMessage.trim() ? 0.7 : 1
+                    }}
+                    onMouseOver={(e) => {
+                      if(newMessage.trim()) {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 6px 18px rgba(142, 45, 226, 0.3)';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    Send
+                  </button>
                 </form>
               </>
             ) : (
-              <div className="select-user-prompt">
+              <div style={styles.selectUserPrompt}>
                 <p>Select a user to start chatting</p>
               </div>
             )}
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
+      {/* Add keyframe animation for typing indicator */}
+      <style>
+        {`
+          @keyframes typingAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+          }
+        `}
+      </style>
     </div>
   );
 };
